@@ -1,8 +1,7 @@
 const http = require('http');
 const app = require('./app');
 const path = require('path');
-
-const port =3002;
+const port =5000;
 var server = http.createServer(app);
 
 

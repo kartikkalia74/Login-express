@@ -24,14 +24,20 @@ const upload = multer({storage:storage});
 Route.post('',(req,res,next)=>{
  
     console.log(req.imageName,'try')
+    const sendObject ={
+       
+        username:req.body.username,
+        password:helphers.hash(req.body.password),
+    }
     var userObject = {
         name:req.body.name,
         username:req.body.username,
         password:helphers.hash(req.body.password),
-        imgName:req.imageName
+        imgName:req.imageName,
+        token:helphers.generateJsonWebToken(sendObject)
     }
     db.postUser(userObject,function(err,result){
-        res.send({err:err,result:result})
+        res.send({err,result})
     })
     console.log(userObject,'userobject');
   

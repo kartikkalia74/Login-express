@@ -7,16 +7,15 @@ const helpher = require('./helphers/helphers');
 //require module
 const login = require('./login/login');
 const signup = require('./signup/signup');
+const forget = require('./forget/forget');
 
 //app.use(bodyParser.urlencoded({extended:true}));
 
 
-
-app.use('/signup',
-upload.fields([{name:'name'},{name:'img'},{name:'username'},
-                {name:'password'},{name:'confirm'},{name:'mobile'}])
-                ,
-                (req,res,next)=>{
+app.use('/signupp',
+upload.single('img'),(req,res,next)=>{
+    console.log(req.headers)
+                    console.log(req.body)
                     if(req.body.name||req.body.username||req.body.password||req.body.confirm||req.files){
                         var flag = true;
                         if(!req.body.name){
@@ -34,6 +33,7 @@ upload.fields([{name:'name'},{name:'img'},{name:'username'},
                             
                         if(!req.body.password){
                             flag=false;
+                            
                             res.send({"error":"password missing"});
                         }else{
                             
@@ -62,18 +62,6 @@ upload.fields([{name:'name'},{name:'img'},{name:'username'},
                                 }    
                             }
                             
-                            
-                        
-                        if(!req.body.mobile){
-                            flag=false;
-                            res.send({"error":"mobile missing"})
-                        }else{
-                           
-                            var number =/^\d{10}$/
-                            var mobile = typeof(req.body.mobile)==="string"&&req.body.mobile.length==10&&req.body.mobile.match(number)?req.body.mobile:false;
-                            if(!mobile){ flag=false;
-                                res.send('incorrect mobile')}
-                        }
                         if(!req.files){console.log('files')
                             flag=false; res.send({"error":"img missing"})}
                            
@@ -86,10 +74,14 @@ upload.fields([{name:'name'},{name:'img'},{name:'username'},
                     }
                 }   ,signup)
      
-
+    app.post('/token',upload.none(),(req,res)=>{
+                   res.send(helpher.verifyJsonWebToken(req.body.token))
+                })
       app.use('/login',upload.none(),login);
+      app.use('/forget',upload.none(),forget)
+      
       app.use('/', upload.none(),(req,res,next)=>{
-        res.send('primi')
+        res.send('primi');
     })  
 
 module.exports = app;

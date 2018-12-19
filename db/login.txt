@@ -5,5 +5,9 @@
 }
 {   name:jacob
    username:jacob097J@gmail.com [verified password]
+    password:JACOB@1jacob
+}
 
+{   username:mary.jones56@example.com,
+    password:Jones56@example.com
 }
